@@ -2,98 +2,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AiTutor - Class 10 Science</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AiTutor - Login</title>
   <style>
     body {
-      background: #0e0e0e;
-      color: #fff;
-      font-family: sans-serif;
-      padding: 20px;
-      text-align: center;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #0f0c29, #302b63, #24243e);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
     }
-    .card {
-      background: #1e1e1e;
-      padding: 20px;
+    .login-container {
+      background: #1c1c2b;
+      padding: 40px;
       border-radius: 10px;
-      margin: 20px auto;
-      max-width: 500px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      width: 300px;
+    }
+    h1 {
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
     }
     button {
-      background: #6200ea;
-      color: #fff;
-      padding: 10px 20px;
+      width: 100%;
+      padding: 10px;
+      background: #00c9ff;
       border: none;
-      margin-top: 10px;
       border-radius: 6px;
+      font-size: 1rem;
       cursor: pointer;
     }
-    .option {
-      margin: 5px 0;
-      background: #333;
-      padding: 10px;
-      border-radius: 6px;
-      cursor: pointer;
+    button:hover {
+      background: #92fe9d;
+    }
+    .message {
+      margin-top: 20px;
+      font-size: 1.1rem;
     }
   </style>
 </head>
 <body>
-  <h1>🚀 Welcome to AiTutor</h1>
-  <p>Learn Class 10 Science with voice explanations and quizzes</p>
-
-  <div class="card">
-    <h2>🧪 Chemical Reactions</h2>
-    <p id="lessonText">A chemical reaction is when substances change into new ones with different properties.</p>
-    <button onclick="speakLesson()">🎧 Listen</button>
-    <button onclick="explainAgain()">🌀 Simpler Explanation</button>
-  </div>
-
-  <div class="card">
-    <h2>🧠 Quiz</h2>
-    <p id="questionText"></p>
-    <div id="optionsContainer"></div>
-    <p id="scoreText"></p>
+  <div class="login-container">
+    <h1>AiTutor Login</h1>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="loginUser()">Login</button>
+    <div class="message" id="loginMsg"></div>
   </div>
 
   <script>
-    const questions = [
-      { q: "What is H2O?", o: ["Water", "Oxygen", "Hydrogen", "Salt"], a: "Water" },
-      { q: "What type of reaction combines elements?", o: ["Combination", "Decomposition", "Neutralization", "Displacement"], a: "Combination" }
-    ];
-    let current = 0, score = 0;
+    const users = {
+      "student1": "pass123",
+      "admin": "adminpass"
+    };
 
-    function loadQuestion() {
-      const q = questions[current];
-      document.getElementById("questionText").textContent = q.q;
-      const container = document.getElementById("optionsContainer");
-      container.innerHTML = "";
-      q.o.forEach(opt => {
-        const div = document.createElement("div");
-        div.className = "option";
-        div.textContent = opt;
-        div.onclick = () => {
-          if (opt === q.a) score++;
-          current++;
-          if (current < questions.length) loadQuestion();
-          else document.getElementById("scoreText").textContent = `Score: ${score}/${questions.length}`;
-        };
-        container.appendChild(div);
-      });
+    function loginUser() {
+      const uname = document.getElementById("username").value;
+      const pwd = document.getElementById("password").value;
+      const msg = document.getElementById("loginMsg");
+
+      if (users[uname] && users[uname] === pwd) {
+        msg.textContent = `✅ Welcome, ${uname}!`;
+        msg.style.color = 'lightgreen';
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 1500);
+      } else {
+        msg.textContent = "❌ Invalid username or password";
+        msg.style.color = 'red';
+      }
     }
-
-    function speakLesson() {
-      const txt = document.getElementById("lessonText").textContent;
-      const utter = new SpeechSynthesisUtterance(txt);
-      speechSynthesis.speak(utter);
-    }
-
-    function explainAgain() {
-      const easier = "A chemical reaction is when something new is made, like milk turning sour.";
-      speechSynthesis.speak(new SpeechSynthesisUtterance(easier));
-    }
-
-    loadQuestion();
   </script>
 </body>
 </html>
